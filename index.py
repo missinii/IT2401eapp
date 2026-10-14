@@ -1,5 +1,7 @@
 from itertools import product
+
 from flask import Flask, render_template, request
+
 app = Flask(__name__)
 
 
@@ -8,13 +10,13 @@ def index():
     categories = [{
         "id": 1,
         "name": "Phone",
-    },{
+    }, {
         "id": 2,
         "name": "Tablet",
-    },{
+    }, {
         "id": 3,
         "name": "PC",
-    },]
+    }, ]
     products = [{
         "id": 1,
         "name": "iPhone 7 Plus",
@@ -81,6 +83,14 @@ def index():
         products = [p for p in products if p["category_id"] == int(cate_id)]
 
     return render_template('index.html', categories=categories, products=products)
+
+@app.route('/signup')
+def signup():
+    return render_template('signup.html')
+
+@app.route('/login')
+def login():
+    return render_template('login.html')
 
 
 if __name__ == '__main__':
