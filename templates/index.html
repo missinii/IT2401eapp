@@ -24,7 +24,7 @@
                  <li class="nav-item">
                     <a class="nav-link" href="/products">All</a>
                 </li>
-                {% for c in categories_data %}
+                {% for c in categories %}
                 <li class="nav-item">
                     <a class="nav-link" href="/?category_id={{c.id}}">{{c.name}}</a>
                 </li>
@@ -44,16 +44,16 @@
     </div>
 </nav>
 <section class="container">
-    {% if products_data %}
+    {% if products %}
     <div class="row">
-        {% for p in products_data %}
+        {% for p in products %}
         <div class="col-md-3 col-6 p-2">
             <div class="card">
                 <img class="card-img-top" src="{{ p.image }}" alt="Card image">
                 <div class="card-body">
                     <h4 class="card-title">{{ p.name }}</h4>
                     <p class="card-text">{{ p.price }}VND</p>
-                    <a href="#" class="btn btn-primary">Details</a>
+                    <a href="/products/?product_id={{p.id}}" class="btn btn-primary">Details</a>
                 </div>
             </div>
         </div>
