@@ -1,89 +1,30 @@
-from itertools import product
-
+import json
+from json import loads
+import os
 from flask import Flask, render_template, request
-
+PRODUCTS_PATH = os.path.join("D:/Coding/CNPM/IT2401eapp/", 'data/products.json')
+CATEGORIES_PATH = os.path.join("D:/Coding/CNPM/IT2401eapp/", 'data/categories.json')
+with open(PRODUCTS_PATH, "r", encoding="utf-8") as pf, open(CATEGORIES_PATH,"r",encoding="utf-8") as cf:
+    products_data = json.load(pf)
+    categories_data = json.load(cf)
 app = Flask(__name__)
-
-
 @app.route("/")
 def index():
-    categories = [{
-        "id": 1,
-        "name": "Phone",
-    }, {
-        "id": 2,
-        "name": "Tablet",
-    }, {
-        "id": 3,
-        "name": "PC",
-    }, ]
-    products = [{
-        "id": 1,
-        "name": "iPhone 7 Plus",
-        "description": "Apple, 32GB, RAM: 3GB, iOS13",
-        "price": 17000000,
-        "image":
-            "https://res.cloudinary.com/dxxwcby8l/image/upload/v1647056401/ipmsmnxjydrhpo21xrd8.jpg",
-        "category_id": 1
-    }, {
-        "id": 2,
-        "name": "iPad Pro 2020",
-        "description": "Apple, 128GB, RAM: 6GB",
-        "price": 37000000,
-        "image":
-            "https://res.cloudinary.com/dxxwcby8l/image/upload/v1646729533/zuur9gzztcekmyfenkfr.jpg",
-        "category_id": 2
-    }, {
-        "id": 3,
-        "name": "Galaxy Note 10 Plus",
-        "description": "Samsung, 64GB, RAML: 6GB",
-        "price": 24000000,
-        "image":
-            "https://res.cloudinary.com/dxxwcby8l/image/upload/v1647248722/r8sjly3st7estapvj19u.jpg",
-        "category_id": 1
-    }, {
-        "id": 4,
-        "name": "Galaxy Note 10 Plus",
-        "description": "Samsung, 64GB, RAML: 6GB",
-        "price": 24000000,
-        "image":
-            "https://res.cloudinary.com/dxxwcby8l/image/upload/v1647248722/r8sjly3st7estapvj19u.jpg",
-        "category_id": 1
-    }, {
-        "id": 5,
-        "name": "Galaxy Note 10 Plus",
-        "description": "Samsung, 64GB, RAML: 6GB",
-        "price": 24000000,
-        "image":
-            "https://res.cloudinary.com/dxxwcby8l/image/upload/v1647248722/r8sjly3st7estapvj19u.jpg",
-        "category_id": 1
-    }, {
-        "id": 6,
-        "name": "Galaxy Note 9 Plus",
-        "description": "Samsung, 64GB, RAML: 6GB",
-        "price": 24000000,
-        "image":
-            "https://res.cloudinary.com/dxxwcby8l/image/upload/v1647248722/r8sjly3st7estapvj19u.jpg",
-        "category_id": 1
-    }, {
-        "id": 7,
-        "name": "Galaxy Note 9 Plus",
-        "description": "Samsung, 64GB, RAML: 6GB",
-        "price": 24000000,
-        "image":
-            "https://res.cloudinary.com/dxxwcby8l/image/upload/v1647248722/r8sjly3st7estapvj19u.jpg",
-        "category_id": 1
-    }]
+    global products_data
+    global categories_data
     kw = request.args.get("kw")
     if kw:
-        products = [p for p in products if p["name"].find(kw) >= 0]
+        products_data = [p for p in products_data if p["name"].find(kw) >= 0]
 
     cate_id = request.args.get("category_id")
     if cate_id:
-        products = [p for p in products if p["category_id"] == int(cate_id)]
+        products_data = [p for p in products_data if p["category_id"] == int(cate_id)]
 
-    return render_template('index.html', categories=categories, products=products)
+    return render_template('index.html', categories=categories_data, products=products_data)
 
+@app.route('/products')
+def listAll():
+    return render_template('index.html', categories=categories_data, products = products_data)
 @app.route('/signup')
 def signup():
     return render_template('signup.html')
@@ -91,6 +32,7 @@ def signup():
 @app.route('/login')
 def login():
     return render_template('login.html')
+
 
 
 if __name__ == '__main__':
